@@ -81,7 +81,7 @@
                         <?php 
         include 'connect.php';
 
-        $sql = "SELECT * FROM user_db";
+        $sql = "SELECT * FROM user_tb";
         $result = mysqli_query($con, $sql);
     ?>
       <div class="container-fluid">
@@ -104,15 +104,15 @@
           <?php 
             while($row = mysqli_fetch_array($result)){
                 echo '<tr>';
-                echo "<td>".$row['user_id']."</td>";
-                echo "<td>".$row['first_name']."</td>";
-                echo "<td>".$row['last_name']."</td>";
-                echo "<td>".$row['username']."</td>";
-                echo "<td>".$row['phone']."</td>";
-                echo "<td>".$row['email']."</td>";
-                echo '<td><a href="editprofile.php?user_id='.$row['user_id'].'" class="btn btn-warning"><i class="far fa-edit"></i> แก้ไข</td>';
+                echo "<td>".$row['userID']."</td>";
+                echo "<td>".$row['firstName']."</td>";
+                echo "<td>".$row['lastName']."</td>";
+                echo "<td>".$row['userName']."</td>";
+                echo "<td>".$row['phoneNumber']."</td>";
+                echo "<td>".$row['emailTxt']."</td>";
+                echo '<td><a href="editprofile.php?user_id='.$row['userID'].'" class="btn btn-warning"><i class="far fa-edit"></i> แก้ไข</td>';
                 ?>
-                <td><button class="btn btn-danger delete" id="<?php echo $row['user_id']; ?>">
+                <td><button class="btn btn-danger delete" id="<?php echo $row['userID']; ?>">
                 <i class="fas fa-trash-alt"></i> Delete</button></td>
                 <?php echo '</tr>';
             } 

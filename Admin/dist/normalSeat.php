@@ -106,8 +106,8 @@
         <?php 
         include 'connect.php';
 
-        $sql = "SELECT booking.*, first_name, last_name, GROUP_CONCAT(seat_detail) FROM booking inner join user_db
-              ON user_db.user_id=booking.user_id INNER JOIN seatdetail ON seatdetail.booking_id=booking.booking_id GROUP BY booking_id";
+        $sql = "SELECT booking.*, firstName, lastName, GROUP_CONCAT(seatNumber) FROM booking inner join user_tb
+              ON user_tb.userID=booking.userID INNER JOIN seatdetail ON seatdetail.bookingID=booking.bookingID GROUP BY bookingID";
               $result = mysqli_query($con, $sql);
         ?>
       <div class="container-fluid">
@@ -145,25 +145,25 @@
                 return "$strDay $strMonthThai $strYear";
             }
             while($row = mysqli_fetch_array($result)){
-                $newdate = $row['date_booking'];
+                $newdate = $row['bookDate'];
                 $date = str_replace('/', '-', $newdate);
                 $newtime = date('Y-m-d', strtotime($date));
                 $strDate = $newtime;
                 echo '<tr>';
-                    echo "<td>".$row['booking_id']."</td>
-                        <td>".$row['first_name']."</td>
-                        <td>".$row['last_name']."</td>
-                        <td>".$row['booking_type']."</td>
+                    echo "<td>".$row['bookingID']."</td>
+                        <td>".$row['firstName']."</td>
+                        <td>".$row['lastName']."</td>
+                        <td>".$row['bookType']."</td>
                         <td>".DateThai($strDate)."</td>
-                        <td>".$row['seat_total']."</td>
-                        <td>".$row['time_booking']."</td>
-                        <td>".$row['GROUP_CONCAT(seat_detail)']."</td>
-                        <td>".$row['child_seat']."</td>
-                        <td>".$row['adult_seat']."</td>
-                        <td>".$row['old_seat']."</td>
-                        <td>".$row['seat_price']."</td>";
-                    if($row['slip_pic'] != ''){
-                    echo "<td><img src='../../bookingpic/".$row['slip_pic']."' height='80' style='cursor: pointer;' data-toggle='modal' data-target='#exampleModal9'></td>
+                        <td>".$row['seatTotal']."</td>
+                        <td>".$row['timeBooking']."</td>
+                        <td>".$row['GROUP_CONCAT(seatNumber)']."</td>
+                        <td>".$row['childSeat']."</td>
+                        <td>".$row['adultSeat']."</td>
+                        <td>".$row['oldSeat']."</td>
+                        <td>".$row['seatPrice']."</td>";
+                    if($row['slipPic'] != ''){
+                    echo "<td><img src='../../bookingpic/".$row['slipPic']."' height='80' style='cursor: pointer;' data-toggle='modal' data-target='#exampleModal9'></td>
                         <div class='modal' id='exampleModal9' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                             <div class='modal-dialog' role='document'>
                               <div class='modal-content'>
@@ -174,7 +174,7 @@
                                   </button>
                                 </div>
                                 <div class='modal-body'>
-                                  <center><img src='../../bookingpic/".$row['slip_pic']."' height='500'></center>
+                                  <center><img src='../../bookingpic/".$row['slipPic']."' height='500' width='400' style='object-fit: cover';></center>
                                 </div>
                               </div>
                             </div>
@@ -183,12 +183,12 @@
                           echo "<td></td>";
                         }
                         echo '<td>';
-                        if($row['status_book'] == 0 && $row['slip_pic'] == null){
-                              echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-danger noPass'>ยังไม่ได้ชำระ</a>";
-                        }elseif($row['status_book'] == 0 && $row['slip_pic'] != ""){
-                              echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-warning pass'>รอตรวจสอบ</a>";
-                        }elseif($row['status_book'] == 1){
-                                echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-success pass'>ชำระเรียบร้อย</a>";
+                        if($row['statusBook'] == 0 && $row['slipPic'] == null){
+                              echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-danger noPass'>ยังไม่ได้ชำระ</a>";
+                        }elseif($row['statusBook'] == 0 && $row['slipPic'] != ""){
+                              echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-warning pass'>รอตรวจสอบ</a>";
+                        }elseif($row['statusBook'] == 1){
+                                echo "<a href='admin-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-success pass'>ชำระเรียบร้อย</a>";
                         }
                     echo "</td>";
                     ?>
@@ -201,7 +201,7 @@
                         }
                     ?>
                     </td>
-                    <td><button class="btn btn-danger delete" id="<?php echo $row['booking_id']; ?>">
+                    <td><button class="btn btn-danger delete" id="<?php echo $row['bookingID']; ?>">
                     <i class="fas fa-trash-alt"></i></button></td>
                     <?php
                     echo '</tr>';

@@ -188,7 +188,7 @@
                                         foreach($seat as $val){
                                             include 'connect.php';
 
-                                        $sql = "SELECT * FROM booking inner join seatdetail on booking.booking_id = seatdetail.booking_id WHERE date_booking LIKE '{$_SESSION['dates']}' and time_booking LIKE '{$_SESSION['timed']}'";
+                                        $sql = "SELECT * FROM booking inner join seatdetail on booking.bookingID = seatdetail.bookingID WHERE bookDate LIKE '{$_SESSION['dates']}' and timeBooking LIKE '{$_SESSION['timed']}'";
                                         $query = mysqli_query($con, $sql);
 
                                         $new1 = "";
@@ -199,7 +199,7 @@
                                         $book = array();
                                         
                                         while($row = mysqli_fetch_assoc($query)){
-                                            array_push($book, $row['seat_detail']);
+                                            array_push($book, $row['seatNumber']);
                                         }
                                         if(in_array($val['seat1'], $book)){
                                             $new1 = "จองแล้ว";

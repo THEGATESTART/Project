@@ -9,7 +9,7 @@
         
         $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO admin_db (username, password) 
+        $sql = "INSERT INTO admin_tb (userName, passWord) 
                 VALUES('$username', '$hashedPwd')";
         $result = mysqli_query($con, $sql);
         header("Location: index.php?regis=success");

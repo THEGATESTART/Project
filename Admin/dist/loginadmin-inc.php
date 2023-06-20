@@ -13,7 +13,7 @@
             header("Location: login.php?login=empty");
             exit();
         }else{
-            $sql = "SELECT * FROM admin_db WHERE admin_user='$username'";
+            $sql = "SELECT * FROM admin_tb WHERE userName='$username'";
             $result = mysqli_query($con, $sql);
             $resultCheck = mysqli_num_rows($result); //check value fron database
             if($resultCheck > 1){
@@ -22,13 +22,13 @@
             }else{
                 if($row = mysqli_fetch_assoc($result)){
                     //D-hasihing the password
-                    $hashedPwdCheck = password_verify($password, $row['admin_pass']);
+                    $hashedPwdCheck = password_verify($password, $row['passWord']);
                     if($hashedPwdCheck == false){
                         header("Location: login.php?login=failed");
                         exit();
                     }elseif($hashedPwdCheck == true){
-                        $_SESSION['ad_id'] = $row['admin_id'];
-                        $_SESSION['ad_username'] = $row['admin_user'];
+                        $_SESSION['ad_id'] = $row['adminID'];
+                        $_SESSION['ad_username'] = $row['userName'];
                         header("Location: index.php?login=success");
                         exit();
                     }

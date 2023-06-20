@@ -107,7 +107,7 @@
 
         /*select จากตาราง booking join กับตาราง user_db กำหนดให้ primarukey ใน user_db = foreignkey ใน booking 
         จาก ตาราง booking culunm booking_type = จองตั๋วแบบเหมา จัดลำดับจาก admin_id*/
-        $sql = "SELECT * FROM booking inner join user_db on user_db.user_id = booking.user_id where booking.booking_type = 'จองตั๋วแบบเหมา' order by booking_id";
+        $sql = "SELECT * FROM booking inner join user_tb on user_tb.userID = booking.userID where booking.bookType = 'จองตั๋วแบบเหมา' order by bookingID";
         $result = mysqli_query($con, $sql);
     ?>
       <div class="container-fluid">
@@ -139,19 +139,19 @@
                 return "$strDay $strMonthThai $strYear";
             }
             while($row = mysqli_fetch_array($result)){
-                $newdate = $row['date_booking'];
+                $newdate = $row['bookDate'];
                 $date = str_replace('/', '-', $newdate);
                 $newtime = date('Y-m-d', strtotime($date));
                 $strDate = $newtime;
                 echo '<tr>';
-                    echo "<td>".$row['booking_id']."</td>
-                        <td>".$row['first_name']."</td>
-                        <td>".$row['last_name']."</td>
-                        <td>".$row['booking_type']."</td>";
+                    echo "<td>".$row['bookingID']."</td>
+                        <td>".$row['firstName']."</td>
+                        <td>".$row['lastName']."</td>
+                        <td>".$row['bookType']."</td>";
                     echo "<td>".DateThai($strDate)."</td>
-                        <td>".$row['seat_price']."</td>";
-                    if($row['slip_pic'] != ''){ //check array slip_pic ว่าเป็นค่าว่างไหม
-                    echo "<td><img src='../../bookingpic/".$row['slip_pic']."' height='80' style='cursor: pointer;' data-toggle='modal' data-target='#exampleModal9'></td>
+                        <td>".$row['seatPrice']."</td>";
+                    if($row['slipPic'] != ''){ //check array slip_pic ว่าเป็นค่าว่างไหม
+                    echo "<td><img src='../../bookingpic/".$row['slipPic']."' height='80' style='cursor: pointer;' data-toggle='modal' data-target='#exampleModal9'></td>
                         <div class='modal' id='exampleModal9' tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
                             <div class='modal-dialog' role='document'>
                               <div class='modal-content'>
@@ -162,7 +162,7 @@
                                   </button>
                                 </div>
                                 <div class='modal-body'>
-                                  <center><img src='../../bookingpic/".$row['slip_pic']."' height='500'></center>
+                                  <center><img src='../../bookingpic/".$row['slipPic']."' height='500'></center>
                                 </div>
                               </div>
                             </div>
@@ -171,12 +171,12 @@
                           echo "<td></td>";
                         }
                         echo '<td>';
-                        if($row['status_book'] == 0 && $row['slip_pic'] == null){
-                            echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-danger noPass'>ยังไม่ได้ชำระ</a>";
-                        }elseif($row['status_book'] == 0 && $row['slip_pic'] != ""){
-                            echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-warning pass'>รอตรวจสอบ</a>";
+                        if($row['status_book'] == 0 && $row['slipPic'] == null){
+                            echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-danger noPass'>ยังไม่ได้ชำระ</a>";
+                        }elseif($row['status_book'] == 0 && $row['slipPic'] != ""){
+                            echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-warning pass'>รอตรวจสอบ</a>";
                         }elseif($row['status_book'] == 1){
-                              echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['booking_id']."&&"."status_id=".$row['status_book']."&&"."slip_pic=".$row['slip_pic']."' class='btn btn-success pass'>ชำระเรียบร้อย</a>";
+                              echo "<a href='admins-inc.php?action=changestatus&booking_id=".$row['bookingID']."&&"."status_id=".$row['statusBook']."&&"."slipPic=".$row['slipPic']."' class='btn btn-success pass'>ชำระเรียบร้อย</a>";
                         }
                     echo '</td>';
                     ?>
@@ -189,7 +189,7 @@
                         }
                     ?>
                     </td>
-                    <td><button class="btn btn-danger delete" id="<?php echo $row['booking_id']; ?>">
+                    <td><button class="btn btn-danger delete" id="<?php echo $row['bookingID']; ?>">
                     <i class="fas fa-trash-alt"></i></button></td>
                     <?php
                     echo '</tr>';
