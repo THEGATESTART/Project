@@ -81,7 +81,7 @@
                         <?php 
         include 'connect.php';
 
-        $sql = "SELECT * FROM admin_db ORDER BY admin_id"; //select จากตาราง admin_db จัดลำดับจาก admin_id
+        $sql = "SELECT * FROM admin_tb ORDER BY adminID"; //select จากตาราง admin_db จัดลำดับจาก admin_id
         $result = mysqli_query($con, $sql); //คิวรี่ข้อมูลเข้า database
     ?>
       <div class="container-fluid">
@@ -100,11 +100,11 @@
           <?php 
             while($row = mysqli_fetch_array($result)){ //ใช้ while ลูปในการนำข้อมูลจาก database มาเก็บไว้ใน array
                 echo '<tr>';
-                echo "<td>".$row['admin_id']."</td>"; //array culumn admin_id
-                echo "<td>".$row['admin_user']."</td>";
-                echo "<td>".$row['admin_pass']."</td>";
+                echo "<td>".$row['adminID']."</td>"; //array culumn admin_id
+                echo "<td>".$row['userName']."</td>";
+                echo "<td>".$row['passWord']."</td>";
               ?>                                <!-- set attibute id ให้เท่า culumn array admin_id -->
-            <td><button class="btn btn-danger delete" id="<?php echo $row['admin_id']; ?>">
+            <td><button class="btn btn-danger delete" id="<?php echo $row['adminID']; ?>">
             <i class="fas fa-trash-alt"></i> Delete</button></td>
             <?php echo '</tr>';
             } 

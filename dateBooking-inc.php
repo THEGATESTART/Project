@@ -24,10 +24,16 @@
 
             $_SESSION['sumSeat'] = $sumSeat;
             $_SESSION['seatDetail'] = $Detail;
-            $_SESSION['dates'] = $seatDate;
             $_SESSION['seatChild'] = $seatChild;
             $_SESSION['seatAdult'] = $seatAdult;
             $_SESSION['seatOlder'] = $seatOlder;
+
+            // Convert date for insert to database
+            $newdate = $seatDate;
+            $date = str_replace('/', '-', $newdate);
+            $newtime = date('Y-m-d', strtotime($date));
+
+            $_SESSION['dates'] = $newtime;
             
         }
 
@@ -39,7 +45,7 @@
             $_SESSION['seatDetails'] = $Details;
             $_SESSION['dates'] = $seatDate;
 
-            // String to date for insert to database
+            // Convert date for insert to database
             $newdate = $seatDate;
             $date = str_replace('/', '-', $newdate);
             $newtime = date('Y-m-d', strtotime($date));

@@ -93,24 +93,24 @@
 
                             include 'connect.php';
 
-                            $booking_id = $_REQUEST['booking_id'];
-                            $_SESSION["book_id"] = $booking_id;
-                            $sql = "SELECT booking.*, first_name, last_name, email, phone, GROUP_CONCAT(seat_detail) FROM booking inner join user_db on user_db.user_id=booking.user_id 
-                                inner join seatdetail on seatdetail.booking_id=booking.booking_id where booking.booking_id='$booking_id' order by booking_id";
-                            $result = mysqli_query($conn, $sql);
+                            $booking_id = $_REQUEST['bookingID'];
+                            $_SESSION["bookID"] = $booking_id;
+                            $sql = "SELECT booking.*, firstName, lastName, emailTxt, phoneNumber, GROUP_CONCAT(seatNumber) FROM booking inner join user_tb on user_tb.userID=booking.userID 
+                                inner join seatdetail on seatdetail.bookingID=booking.bookingID where booking.bookingID='$booking_id' order by bookingID";
+                            $result = mysqli_query($con, $sql);
 
                             while($row = mysqli_fetch_array($result)){
                             echo '<div class="row">
                                 <div class="col-sm-12">';
-                                if($row['status_book'] == 0 && $row['slip_pic'] == null){
+                                if($row['statusBook'] == 0 && $row['slipPic'] == null){
                                     echo '<div class="col-sm-12">
                                     <input class="btn btn-danger rounded-pill w-100 p-3" value="ยังไม่ได้ชำระ" readonly>
                                     </div>';
-                                    }elseif($row['slip_pic'] != "" && $row['status_book'] == 0){
+                                    }elseif($row['slipPic'] != "" && $row['statusBook'] == 0){
                                         echo '<div class="col-sm-12">
                                         <input class="btn btn-warning rounded-pill w-100 p-3" value="รอการตรวจสอบ" readonly>
                                      </div>';
-                                    }elseif($row['status_book'] == 1){
+                                    }elseif($row['statusBook'] == 1){
                                         echo '<div class="col-sm-12">
                                         <input class="btn btn-success rounded-pill w-100 p-3" value="ชำระเรียบร้อย" readonly>
                                      </div>';
@@ -123,10 +123,10 @@
                                         echo '<div class="card-body">'; 
                                             echo '<div class="row mt-2">';
                                                 echo '<div class="col-sm-3">';
-                                                    echo "<h5>BOOKING_ID: ".$row['booking_id']."</h5>";                 
+                                                    echo "<h5>BOOKING_ID: ".$row['bookingID']."</h5>";                 
                                                 echo '</div>';
                                                 echo '<div class="col-sm-9">';
-                                                    echo "<h5>วันที่: ".$row['date_booking']."</h5>";
+                                                    echo "<h5>วันที่: ".$row['bookDate']."</h5>";
                                                 echo '</div>';
                                             echo '</div>';
                                             echo '<hr>';
@@ -135,7 +135,7 @@
                                                     echo '<h5>รูปแบบการจอง: </h5>';
                                                 echo '</div>';
                                                 echo '<div class="col-sm-9">';
-                                                    echo "<h5>".$row['booking_type']."</h5>";
+                                                    echo "<h5>".$row['bookType']."</h5>";
                                                    echo '<hr>';
                                                 echo '</div>';
                                             echo '</div>';
@@ -145,10 +145,10 @@
                                                     echo '<p>ผู้จอง</p>';
                                                 echo '</div>';
                                                 echo '<div class="col-sm-7 rounded" style="background-color: #E2FFF8;">';
-                                                    echo "<p class='mt-1'>".$row['first_name']."&nbsp;".$row['last_name']."</p>";
+                                                    echo "<p class='mt-1'>".$row['firstName']."&nbsp;".$row['lastName']."</p>";
                                                     echo '<div class="form-inline">';
-                                                    echo "<p>".$row['email']."</p>&nbsp;&nbsp;&nbsp;";
-                                                    echo "<p>".$row['phone']."</p>";
+                                                    echo "<p>".$row['emailTxt']."</p>&nbsp;&nbsp;&nbsp;";
+                                                    echo "<p>".$row['phoneNumber']."</p>";
                                                     echo '</div>';
                                                 echo '</div>';
                                             echo '</div>';
@@ -160,31 +160,31 @@
                                                 echo '<div class="col-sm-7 rounded" style="background-color: #E2FFF8;">';
                                                     echo '<div class="row">';
                                                         echo '<div class="col-6">';
-                                                            echo "<p class='mt-1'>จำนวนที่จอง:&nbsp; ".$row['seat_total']."</p>";
+                                                            echo "<p class='mt-1'>จำนวนที่จอง:&nbsp; ".$row['seatTotal']."</p>";
                                                         echo '</div>';
                                                         echo '<div class="col-6">';
-                                                            echo "<p class='mt-1'>เวลาที่จอง:&nbsp; ".$row['time_booking']."</p>";
+                                                            echo "<p class='mt-1'>เวลาที่จอง:&nbsp; ".$row['timeBooking']."</p>";
                                                         echo '</div>';
                                                     echo '</div>';
                                                     echo '<div class="row">';
                                                         echo '<div class="col-12">';
-                                                            echo "<p class='mt-1'>ตำแหน่งที่นั่งที่จอง:&nbsp; ".$row['GROUP_CONCAT(seat_detail)']."</p>";
+                                                            echo "<p class='mt-1'>ตำแหน่งที่นั่งที่จอง:&nbsp; ".$row['GROUP_CONCAT(seatNumber)']."</p>";
                                                         echo '</div>';
                                                     echo '</div>';
                                                     echo '<div class="row">';
                                                         echo '<div class="col-4">';
-                                                            echo "<p class='mt-1'>เด็ก:&nbsp; ".$row['child_seat']."</p>";
+                                                            echo "<p class='mt-1'>เด็ก:&nbsp; ".$row['childSeat']."</p>";
                                                         echo '</div>';
                                                         echo '<div class="col-4">';
-                                                            echo "<p class='mt-1'>ผู้ใหญ่:&nbsp; ".$row['adult_seat']."</p>";
+                                                            echo "<p class='mt-1'>ผู้ใหญ่:&nbsp; ".$row['adultSeat']."</p>";
                                                         echo '</div>';
                                                         echo '<div class="col-4">';
-                                                            echo "<p class='mt-1'>ผู้สูงอายุ:&nbsp; ".$row['old_seat']."</p>";
+                                                            echo "<p class='mt-1'>ผู้สูงอายุ:&nbsp; ".$row['oldSeat']."</p>";
                                                         echo '</div>';
                                                     echo '</div>';
                                                    echo '<div class="row">';
                                                         echo '<div class="col-6">';
-                                                       echo "<p class='mt-1'>ราคารวมทั้งหมด:&nbsp; ".$row['seat_price']."</p>
+                                                       echo "<p class='mt-1'>ราคารวมทั้งหมด:&nbsp; ".$row['seatPrice']."</p>
                                                         </div>
                                                     </div>";
                                                 echo '</div>';
@@ -195,8 +195,8 @@
                                                     echo '<p>ใบเสร็จการโอน</p>';
                                                 echo '</div>';
                                                 echo '<div class="col-sm-7 rounded" style="background-color: #E2FFF8;">';
-                                                    if($row['slip_pic'] != ''){
-                                                        echo "<center><img class='mt-2 mb-2' src='bookingpic/".$row['slip_pic']."' height='300'></center>";
+                                                    if($row['slipPic'] != ''){
+                                                        echo "<center><img class='mt-2 mb-2' src='bookingpic/".$row['slipPic']."' height='300'></center>";
                                                     }else{
                                                         echo "";
                                                     }
@@ -208,19 +208,19 @@
                             echo '</div>';
                             echo '<div class="row mt-3">';
                                 
-                                if($row['status_book'] == 0){
+                                if($row['statusBook'] == 0){
                                     echo '<div class="col-sm-6"></div>
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-3">
                                         <a href="statusDetail.php" class="btn btn-outline-secondary w-100">ย้อนกลับ</a>
                                     </div>';
-                                }elseif($row['status_book'] == 1){
+                                }elseif($row['statusBook'] == 1){
                                     echo '<div class="col-sm-6"></div>
                                     <div class="col-sm-3">
                                         <a href="statusDetail.php" class="btn btn-outline-secondary w-100">ย้อนกลับ</a>
                                     </div>
                                     <div class="col-sm-3">
-                                    <a href="dlslip.php?booking_id='.$row['booking_id'].'" class="btn btn-primary w-100">พิมพ์ตั๋ว</a>
+                                    <a href="dlslip.php?booking_id='.$row['bookingID'].'" class="btn btn-primary w-100">พิมพ์ตั๋ว</a>
                                     </div>';
                                 }
                                echo '</div>';

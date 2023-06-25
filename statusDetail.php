@@ -127,86 +127,85 @@
                             booking.userID='$user_id' order by bookingID desc LIMIT $startFrom, $num_page";
                         $result = mysqli_query($con, $sql);
 
-                        while($row = mysqli_fetch_array($result)){
-                           echo '<div class="row justify-content-center">';
-                                echo '<div class="col-sm-12">';
-                                    echo '<div class="card border-0">';
-                                        echo '<div class="card-body">';
+                         while($row = mysqli_fetch_array($result)){ ?>
+
+                           <div class="row justify-content-center">
+                                <div class="col-sm-12">
+                                    <div class="card border-0">
+                                        <div class="card-body">
                                         
-                                            echo '<div class="row">';
-                                                echo '<div class="col-sm-6">';
-                                                    
-                                                    echo '<div class="tab-content">';
-                                                        echo '<div id="Soon" class="container tab-pane active">';
-                                                            echo '<div class="card">';
-                                                                echo '<div class="card-header bg-white">';
-                                                                    echo '<h4>จองตั๋วล่าสุด...</h4>';
-                                                                echo '</div>';
-                                                                echo '<div class="card card-body">';
-                                                                    echo '<div class="row">';
-                                                                        echo '<div class="col-5">';
-                                                                            echo "<h5>BOOKING_ID ".$row['bookingID'] ."</h5>";
-                                                                        echo '</div>';
-                                                                        echo '<div class="col-7">';
-                                                                            if($row['statusBook'] == 0 && $row['slipPic'] == null){
-                                                                                echo '<div class="col-sm-12">
-                                                                                <input class="btn btn-danger rounded-pill w-100 p-3" value="ยังไม่ได้ชำระ" readonly>
+                                            <div class="row">
+                                                <div class="col-md-6"> 
+                                                    <div class="tab-content">
+                                                        <div id="Soon" class="container tab-pane active">
+                                                            <div class="card">
+                                                                <div class="card-header bg-white">
+                                                                    <h4>จองตั๋วล่าสุด...</h4>
+                                                                </div>
+                                                                <div class="card card-body">
+                                                                    <div class="row">
+                                                                        <div class="col-5">
+                                                                             <h5>BOOKING_ID : <?php echo $row['bookingID'] ?></h5>
+                                                                        </div>
+                                                                        <div class="col-7">
+                                                                           <?php if($row['statusBook'] == 0 && $row['slipPic'] == null){ ?>
+                                                                                <div class="col-sm-12">
+                                                                                    <input class="btn btn-danger rounded-pill w-100 p-3" value="ยังไม่ได้ชำระ" readonly>
                                                                                 </div>
-                                                                                <h6 class="mt-2 ml-3" style="color: red;">(ชำระค่าบริการภาย 48 ชั่วโมง)</h6>';
-                                                                                }elseif($row['slipPic'] != "" && $row['statusBook'] == 0){
-                                                                                    echo '<div class="col-sm-12">
+                                                                                <h6 class="mt-2 ml-3" style="color: red;">(ชำระค่าบริการภาย 48 ชั่วโมง)</h6>
+                                                                               <?php } elseif ($row['slipPic'] != "" && $row['statusBook'] == 0){ ?>
+                                                                                <div class="col-sm-12">
                                                                                     <input class="btn btn-warning rounded-pill w-100 p-3" value="รอการตรวจสอบ" readonly>
                                                                                 </div>
                                                                                 <h6 class="mt-2 ml-4" style="color: red;">(รอการตรวจสอบ 12 ชั่วโมง)</h6>';
-                                                                                }elseif($row['statusBook'] == 1){
-                                                                                    echo '<div class="col-sm-12">
+                                                                               <?php } elseif ($row['statusBook'] == 1){ ?>
+                                                                                <div class="col-sm-12">
                                                                                     <input class="btn btn-success rounded-pill w-100 p-3" value="ชำระเรียบร้อย" readonly>
-                                                                                </div>';
-                                                                                }
-                                                                        echo '</div>';
-                                                                    echo '</div>';
-                                                                    echo '<div class="row">';
-                                                                            echo '<div class="col-sm-12">';
-                                                                                echo "<label for='book'>ผู้จอง: </label>";
-                                                                                echo "<p id='book' style='background-color: #E2FFF8;' class='p-2 rounded'>".$row['firstName']."&nbsp;".$row['lastName']."</p>";
-                                                                            echo '</div>';
-                                                                    echo '</div>';
-                                                                    echo '<div class="row">';
-                                                                            echo '<div class="col-6">';
-                                                                                echo "<label for='type'>ประเภทการจอง: </label>";
-                                                                                echo "<p id='type' style='background-color: #E2FFF8;' class='p-2 rounded'>".$row['bookType']."</p>";
-                                                                            echo '</div>';
-                                                                            echo '<div class="col-6">';
-                                                                                echo "<label for='bookingDate'>วันที่จอง: </label>";
-                                                                                echo "<p id='bookingDate' style='background-color: #E2FFF8;' class='p-2 rounded'>".$row['bookDate']."</p>";
-                                                                            echo '</div>';
-                                                                    echo '</div>';
-                                                                echo '</div>';
-                                                                echo '<div class="card-footer">';
-                                                                if($row['bookType'] == 'จองตั๋วแบบปกติ'){
-                                                                    echo "<a href='bookingDetail.php?statusBook=".$row['statusBook']."&&"."bookingID=".$row['bookingID']."'
-                                                                        class='btn btn-outline-primary mr-2 mb-1'>รายละเอียด</a>";
-                                                                    echo "<a href='sendSlip.php?booking_id=".$row['booking_id']."' 
-                                                                        class='btn btn-primary mr-2 mb-1'>แจ้งการโอน</a>";
-                                                                    }
-                                                                if($row['bookType'] == 'จองตั๋วแบบเหมา'){
-                                                                    echo "<a href='bookingDetails.php?statusBook=".$row['statusBook']."&&"."bookingID=".$row['bookingID']."'
-                                                                        class='btn btn-outline-primary mr-2 mb-1'>รายละเอียด</a>";
-                                                                    echo "<a href='sendSlipAll.php?booking_id=".$row['bookingID']."' 
-                                                                        class='btn btn-primary mr-2 mb-1'>แจ้งการโอน</a>";
-                                                                    }
-                                                                echo '</div>';
-                                                            echo '</div>';
-                                                        echo '</div>';
-                                                    echo '</div>';
-                                                echo '</div>';
-                                            echo '</div>';
-                                        echo'</div>';
-                                    echo'</div>';
-                                echo'</div>';
-                            echo'</div>';
-                            }
-                            ?>
+                                                                                </div>
+                                                                               <?php } ?>
+                                                                         </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <label for='book'>ผู้จอง: </label>
+                                                                            <p id='book' style='background-color: #E2FFF8;' class='p-2 rounded'><?php echo $row['firstName']."&nbsp;".$row['lastName']?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <label for='type'>ประเภทการจอง: </label>
+                                                                            <p id='type' style='background-color: #E2FFF8;' class='p-2 rounded'><?php echo $row['bookType'] ?></p>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <label for='bookingDate'>วันที่จอง: </label>
+                                                                            <p id='bookingDate' style='background-color: #E2FFF8;' class='p-2 rounded'><?php echo $row['bookDate'] ?></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-footer">
+                                                                <?php if($row['bookType'] == 'จองตั๋วแบบปกติ'){ ?>
+                                                                    <a href='bookingDetail.php?statusBook=<?php echo $row['statusBook']."&&"."bookingID=".$row['bookingID'] ?>' 
+                                                                        class="btn btn-outline-primary mr-2 mb-1">รายละเอียด</a>
+                                                                    <a href='sendSlip.php?booking_id=<?php echo $row['bookingID'] ?>' 
+                                                                        class='btn btn-primary mr-2 mb-1'>แจ้งการโอน</a>
+                                                                   <?php } ?>
+                                                                <?php if($row['bookType'] == 'จองตั๋วแบบเหมา'){ ?>
+                                                                    <a href='bookingDetails.php?statusBook=<?php echo $row['statusBook']."&&"."bookingID=".$row['bookingID'] ?>'
+                                                                        class='btn btn-outline-primary mr-2 mb-1'>รายละเอียด</a>
+                                                                    <a href='sendSlipAll.php?booking_id=<?php echo $row['bookingID'] ?>' 
+                                                                        class='btn btn-primary mr-2 mb-1'>แจ้งการโอน</a>
+                                                                   <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                         </form>
                         <?php 
                             $sql1 = "SELECT * FROM booking inner join user_tb on user_tb.userID = booking.userID where 

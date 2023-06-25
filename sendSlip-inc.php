@@ -14,7 +14,7 @@
 
         $slipImage = $newImgname;
 
-        $sql = "UPDATE booking set slip_pic='$slipImage' where booking_id ='$_REQUEST[booking_id]' ";
+        $sql = "UPDATE booking set slipPic='$slipImage' where bookingID ='$_REQUEST[booking_id]' ";
         $result = mysqli_query($con,$sql);
         header("Location: statusDetail.php?uploadSuccess");
     }

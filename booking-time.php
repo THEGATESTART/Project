@@ -114,31 +114,52 @@
                     </div>
                     <?php
                         include 'connect.php';
-                        
-                        $sql = "SELECT sum(seatTotal) as 'sumseat', timeBooking FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='09.30' group BY timeBooking";
+
+                        $maxseat = 24;
+                        $resultSeat = "";
+                        $sql = "SELECT seatTotal FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='09.30' group BY timeBooking";
                         $result = mysqli_query($con, $sql);
                         $row = mysqli_fetch_array($result);
-                        $sumseat = $row["sumseat"];
-                        $maxseat = 24;
-                        $resultSeat = $maxseat - $sumseat;
+                        if (is_null($row)) {
+                            $resultSeat = $maxseat;
+                        } else {
+                            $sumseat = $row['seatTotal'];
+                            $resultSeat = $maxseat - $sumseat;
+                        }
 
-                        $sql1 = "SELECT bookingID, bookType, bookDate, sum(seatTotal) as 'sumseat', timeBooking FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='10.30' group BY timeBooking";
+                        $resultSeat1 = "";
+                        $sql1 = "SELECT seatTotal FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='10.30' group BY timeBooking";
                         $result1 = mysqli_query($con, $sql1);
                         $row1 = mysqli_fetch_array($result1);
-                        $sumseat1 = $row1["sumseat"];
-                        $resultSeat1 = $maxseat - $sumseat1;
+                        if (is_null($row1)) {
+                            $resultSeat1 = $maxseat;
+                        } else {
+                            $sumseat1 = $row1['seatTotal'];
+                            $resultSeat1 = $maxseat - $sumseat1;
+                        }
 
-                        $sql2 = "SELECT bookingID, bookType, bookDate, sum(seatTotal) as 'sumseat', timeBooking FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='13.30' group BY timeBooking";
+                        $resultSeat2 = "";
+                        $sql2 = "SELECT seatTotal FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='13.30' group BY timeBooking";
                         $result2 = mysqli_query($con, $sql2);
                         $row2 = mysqli_fetch_array($result2);
-                        $sumseat2 = $row2["sumseat"];
-                        $resultSeat2 = $maxseat - $sumseat2;
-
-                        $sql3 = "SELECT bookingID, bookType, bookDate, sum(seatTotal) as 'sumseat', timeBooking FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='15.30' group BY timeBooking";
+                        if (is_null($row2)) {
+                            $resultSeat2 = $maxseat;
+                        } else {
+                            $sumseat2 = $row2['seatTotal'];
+                            $resultSeat2 = $maxseat - $sumseat2;
+                        }
+                
+                        $resultSeat3 = "";
+                        $sql3 = "SELECT seatTotal FROM booking where bookDate='{$_SESSION['dates']}' and timeBooking='15.30' group BY timeBooking";
                         $result3 = mysqli_query($con, $sql3);
                         $row3 = mysqli_fetch_array($result3);
-                        $sumseat3 = $row3["sumseat"];
-                        $resultSeat3 = $maxseat - $sumseat3;
+                        if (is_null($row3)) {
+                            $resultSeat3 = $maxseat;
+                        } else {
+                            $sumseat3 = $row3['seatTotal'];
+                            $resultSeat3 = $maxseat - $sumseat3;
+                        }
+                        
                     ?>
                     <div class="card-body">
                         <form id="timeFrm" action="booking-time-inc.php" method="POST">
@@ -323,13 +344,13 @@
     </div>
 
     <!-- Footer -->
-    <footer class="sticky-footer bg-dark p-4 mt-3 fixed-bottom">
+    <!-- <footer class="bg-dark p-4 mt-3 fixed-bottom">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
                 <span class="text-white">Copyright &copy; Your Website 2019</span>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
     <script>
         $(document).ready(function () {

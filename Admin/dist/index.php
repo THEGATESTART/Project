@@ -117,10 +117,15 @@
                                 </form>
                                 <?php
                                     if(isset($_GET['submit']) != ""){
-                                        $searchTime = $_GET["date"];
+                                        $searchDate = $_GET["date"];
+                                        // Convert date for insert to database
+                                        $newdate = $searchDate;
+                                        $date = str_replace('/', '-', $newdate);
+                                        $newtime = date('Y-m-d', strtotime($date));
                                     }else{
                                         date_default_timezone_set("Asia/Bangkok");
-                                        $searchTime = date("d/m/Y");
+                                        $newtime = date("Y-m-d");
+                                        $searchDate = date("Y/m/d");
                                     }
                                 ?>
                             </div>
@@ -130,31 +135,51 @@
                         <?php
                         include 'connect.php';
 
-                        $sql = "SELECT booking_id, booking_type,date_booking,sum(seat_total) as 'sumseat',time_booking FROM `booking` where date_booking='$searchTime' and time_booking='09.30' group BY time_booking";
+                        $maxseat = 24;
+                        $resultSeat = "";
+                        $sql = "SELECT sum(seatTotal) as 'sumSeat' FROM booking where bookDate='$newtime' and timeBooking='09.30' group BY timeBooking";
                         $result = mysqli_query($con, $sql);
                         $row = mysqli_fetch_array($result);
-                        $sumseat = $row["sumseat"];
-                        $fullSeat = "";
-                        $maxseat = 24;
-                        $resultSeat = $maxseat - $sumseat;
+                        if (is_null($row)) {
+                            $resultSeat = $maxseat;
+                        } else {
+                            $sumseat = $row['sumSeat'];
+                            $resultSeat = $maxseat - $sumseat;
+                        }
 
-                        $sql1 = "SELECT booking_id, booking_type, date_booking, sum(seat_total) as 'sumseat',time_booking FROM `booking` where date_booking='$searchTime' and time_booking='10.30' group BY time_booking";
+                        $resultSeat1 = "";
+                        $sql1 = "SELECT sum(seatTotal) as 'sumSeat' FROM booking where bookDate='$newtime' and timeBooking='10.30' group BY timeBooking";
                         $result1 = mysqli_query($con, $sql1);
                         $row1 = mysqli_fetch_array($result1);
-                        $sumseat1 = $row1["sumseat"];
-                        $resultSeat1 = $maxseat - $sumseat1;
+                        if (is_null($row1)) {
+                            $resultSeat1 = $maxseat;
+                        } else {
+                            $sumseat1 = $row1['sumSeat'];
+                            $resultSeat1 = $maxseat - $sumseat1;
+                        }
 
-                        $sql2 = "SELECT booking_id, booking_type, date_booking, sum(seat_total) as 'sumseat',time_booking FROM `booking` where date_booking='$searchTime' and time_booking='13.30' group BY time_booking";
+                        $resultSeat2 = "";
+                        $sql2 = "SELECT sum(seatTotal) as 'sumSeat' FROM booking where bookDate='$newtime' and timeBooking='13.30' group BY timeBooking";
                         $result2 = mysqli_query($con, $sql2);
                         $row2 = mysqli_fetch_array($result2);
-                        $sumseat2 = $row2["sumseat"];
-                        $resultSeat2 = $maxseat - $sumseat2;
-
-                        $sql3 = "SELECT booking_id, booking_type, date_booking, sum(seat_total) as 'sumseat', time_booking FROM `booking` where date_booking='$searchTime' and time_booking='15.30' group BY time_booking";
+                        if (is_null($row2)) {
+                            $resultSeat2 = $maxseat;
+                        } else {
+                            $sumseat2 = $row2['sumSeat'];
+                            $resultSeat2 = $maxseat - $sumseat2;
+                        }
+                
+                        $resultSeat3 = "";
+                        $sql3 = "SELECT sum(seatTotal) as 'sumSeat' FROM booking where bookDate='$newtime' and timeBooking='15.30' group BY timeBooking";
                         $result3 = mysqli_query($con, $sql3);
                         $row3 = mysqli_fetch_array($result3);
-                        $sumseat3 = $row3["sumseat"];
-                        $resultSeat3 = $maxseat - $sumseat3;
+                        if (is_null($row3)) {
+                            $resultSeat3 = $maxseat;
+                        } else {
+                            $sumseat3 = $row3['sumSeat'];
+                            $resultSeat3 = $maxseat - $sumseat3;
+                        }
+
                         ?>
 
                         <!-- Search date seat -->
@@ -164,7 +189,7 @@
                                     <div class="card-header">
                                     <div class="row">
                                         <div class="col-sm-7 text-white"><h2>ว่าง: </h2></div>
-                                        <div class="col-sm-5 text-white text-center"><h2><?php echo $searchTime; ?></h2></div>
+                                        <div class="col-sm-5 text-white text-center"><h2><?php echo $searchDate; ?></h2></div>
                                     </div>
                                     </div>
                                     <?php
@@ -355,7 +380,7 @@
                                         foreach($seat as $val){
                                             include 'connect.php';
 
-                                            $sql = "SELECT * FROM `booking` inner join seatdetail on booking.booking_id = seatdetail.booking_id WHERE `date_booking` LIKE '$searchTime' and time_booking='{$_SESSION['seTime']}'";
+                                            $sql = "SELECT * FROM booking inner join seatdetail on booking.bookingID = seatdetail.bookingID WHERE bookDate LIKE '$newtime' and timeBooking='{$_SESSION['seTime']}'";
                                             $query = mysqli_query($con, $sql);
 
                                            $new1 = "";
@@ -366,7 +391,7 @@
                                            $book = array();
 
                                         while($row = mysqli_fetch_assoc($query)){
-                                            array_push($book, $row['seat_detail']);
+                                            array_push($book, $row['seatNumber']);
                                         }
 
                                         if(in_array($val['seat1'], $book)){

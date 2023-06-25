@@ -99,30 +99,30 @@
                         include 'connect.php';
 
                         $uid =  $_SESSION['u_id'];
-                        $sql = "SELECT * FROM user_db  where user_db.user_id='$uid'";
+                        $sql = "SELECT * FROM user_tb  where user_tb.userID='$uid'";
                         $result = mysqli_query($con, $sql);
                         while($row = mysqli_fetch_array($result)){
-                            $date = str_replace('/', '-', $row["date_regis"]);
-                            $newtime = date('d/m/Y H:i:s', strtotime($date));
+                            // $date = str_replace('/', '-', $row["date_regis"]);
+                            // $newtime = date('d/m/Y H:i:s', strtotime($date));
                         echo '<div class="row">
                             <div class="col-6">';
-                                echo "<h4><p><i class='far fa-address-card'></i> ชื่อ:&nbsp;".$row['first_name']." </p></h4>
+                                echo "<h4><p><i class='far fa-address-card'></i> ชื่อ:&nbsp;".$row['firstName']." </p></h4>
                             </div>
                             <div class='col-6'>";
-                                echo "<h4><p><i class='far fa-address-card'></i> นามสกุล:&nbsp;".$row['last_name']."</p></h4>
+                                echo "<h4><p><i class='far fa-address-card'></i> นามสกุล:&nbsp;".$row['lastName']."</p></h4>
                             </div>
                         </div>";
                         echo "<div class='row'>
                             <div class='col-6'>
-                                <h4><p><i class='fas fa-user'></i> ชื่อผู้ใช้งาน: &nbsp;".$row['username']."</p></h4>
+                                <h4><p><i class='fas fa-user'></i> ชื่อผู้ใช้งาน: &nbsp;".$row['Username']."</p></h4>
                             </div>";
                             echo "<div class='col-5'>
-                                <h4><p><i class='far fa-envelope'></i> อีเมล์: &nbsp;".$row['email']."</p></h4>
+                                <h4><p><i class='far fa-envelope'></i> อีเมล์: &nbsp;".$row['emailTxt']."</p></h4>
                             </div>
                         </div> ";
                         echo "<div class='row'>
                         <div class='col-6'>
-                            <h4><p><i class='fas fa-phone'></i> เบอร์โทรศัพท์: &nbsp;".$row['phone']."</p></h4>
+                            <h4><p><i class='fas fa-phone'></i> เบอร์โทรศัพท์: &nbsp;".$row['phoneNumber']."</p></h4>
                         </div>
                         <div class='col-6'>
                             <h4><p><i class='far fa-calendar-alt'></i> สมัครสมาชิก: &nbsp;".$newtime."</p></h4>

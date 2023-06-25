@@ -89,7 +89,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text">BOOKING_ID: </span>
                                                     </div>
-                                                        <input type="number" class="form-control" name="b_id" id="b_id" min="0" placeholder="กรอก BOOKING_ID" value="<?php echo $_GET['b_id'] ?>">
+                                                        <input type="number" class="form-control" name="b_id" id="b_id" min="0" placeholder="กรอก BOOKING_ID" value="">
                                                         <button class="btn btn-primary" type="submit" name="submit"><i class="fas fa-search"></i> Search</button>
                                                     </div>
                                                 </form>
@@ -97,14 +97,14 @@
                                                 include 'connect.php';
 
                                                     if(isset($_GET['submit']) != ""){
-                                                        $sql = "SELECT * FROM booking WHERE booking.booking_id = ".$_GET['b_id']."";
+                                                        $sql = "SELECT * FROM booking WHERE booking.bookingID = ".$_GET['b_id']."";
                                                         $result = mysqli_query($con, $sql) or die ("Error: " . mysqli_error($con));
                                                         $row = mysqli_fetch_array($result);
-                                                        if($row['booking_type'] == "จองตั๋วแบบปกติ"){
-                                                            $booking_type = $row['booking_type'];
+                                                        if($row['bookType'] == "จองตั๋วแบบปกติ"){
+                                                            $booking_type = $row['bookType'];
                                                             $booking_id = $_GET["b_id"];
-                                                        }elseif($row['booking_type'] == "จองตั๋วแบบเหมา"){
-                                                            $booking_type = $row['booking_type'];
+                                                        }elseif($row['bookType'] == "จองตั๋วแบบเหมา"){
+                                                            $booking_type = $row['bookType'];
                                                             $booking_id = $_GET["b_id"];
                                                         }
                                                     }else{
@@ -119,22 +119,22 @@
 
                                     if($booking_id != "" && $booking_type == "จองตั๋วแบบปกติ"){
                                         $book_id = $booking_id;
-                                        $sql = "SELECT booking.*, first_name, last_name, email, phone, GROUP_CONCAT(seat_detail) FROM booking inner join user_db on user_db.user_id=booking.user_id 
-                                            inner join seatdetail on seatdetail.booking_id=booking.booking_id WHERE booking.booking_id LIKE '%".$book_id."%'";
+                                        $sql = "SELECT booking.*, firstName, lastName, emailTxt, phoneNumber, GROUP_CONCAT(seatNumber) FROM booking inner join user_tb on user_tb.userID=booking.userID 
+                                            inner join seatdetail on seatdetail.bookingID=booking.bookingID WHERE booking.bookingID LIKE '%".$book_id."%'";
                                         $result = mysqli_query($con, $sql) or die ("Error: " . mysqli_error($con));
 
                                         while($row = mysqli_fetch_array($result)){
                                         echo '<div class="row">
                                             <div class="col-sm-12">';
-                                            if($row['status_book'] == 0 && $row['slip_pic'] == null){
+                                            if($row['statusBook'] == 0 && $row['slipPic'] == null){
                                                 echo '<div class="col-sm-12">
                                                 <input class="btn btn-danger rounded-pill w-100 p-3" value="ยังไม่ได้ชำระ" readonly>
                                                 </div>';
-                                                }elseif($row['slip_pic'] != "" && $row['status_book'] == 0){
+                                                }elseif($row['slipPic'] != "" && $row['statusBook'] == 0){
                                                     echo '<div class="col-sm-12">
                                                     <input class="btn btn-warning rounded-pill w-100 p-3" value="รอการตรวจสอบ" readonly>
                                                 </div>';
-                                                }elseif($row['status_book'] == 1){
+                                                }elseif($row['statusBook'] == 1){
                                                     echo '<div class="col-sm-12">
                                                     <input class="btn btn-success rounded-pill w-100 p-3" value="ชำระเรียบร้อย" readonly>
                                                 </div>';
@@ -145,19 +145,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">ชื่อ-นามสกุล: </label>
-                                                <input type="text" class="form-control" value='.$row['first_name'].'&nbsp;'.$row['last_name'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['firstName'].'&nbsp;'.$row['lastName'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">อีเมล์: </label>
-                                                <input type="text" class="form-control" value='.$row['email'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['emailTxt'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">เบอร์โทรศัพท์: </label>
-                                                <input type="text" class="form-control" value='.$row['phone'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['phoneNumber'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -165,19 +165,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">รูปแบบการจอง: </label>
-                                                <input type="text" class="form-control" value='.$row['booking_type'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['bookType'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">วันที่จอง: </label>
-                                                <input type="text" class="form-control" value='.$row['date_booking'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['bookDate'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">เวลาที่จอง: </label>
-                                                <input type="text" class="form-control" value='.$row['time_booking'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['timeBooking'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,19 +185,19 @@
                                             <div class="col-sm-2">
                                                 <div class="form-group">
                                                 <label for="datepicker">จำนวนที่จอง: </label>
-                                                <input type="text" class="form-control text-center" value='.$row['seat_total'].' readonly>
+                                                <input type="text" class="form-control text-center" value='.$row['seatTotal'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-2">
                                                 <div class="form-group">
                                                 <label for="datepicker">ราคารวม: </label>
-                                                <input type="text" class="form-control text-center" value='.$row['seat_price'].' readonly>
+                                                <input type="text" class="form-control text-center" value='.$row['seatPrice'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="form-group">
                                                 <label for="datepicker">ตำแหน่งที่นั่งที่จอง: </label>
-                                                <input type="text" class="form-control" value='.$row['GROUP_CONCAT(seat_detail)'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['GROUP_CONCAT(seatNumber)'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -205,19 +205,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">เด็ก: </label>
-                                                <input type="text" class="form-control text-center" value='.$row['child_seat'].' readonly>
+                                                <input type="text" class="form-control text-center" value='.$row['childSeat'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">ผู้ใหญ่: </label>
-                                                <input type="text" class="form-control text-center" value='.$row['adult_seat'].' readonly>
+                                                <input type="text" class="form-control text-center" value='.$row['adultSeat'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">ผู้สูงอายุ: </label>
-                                                <input type="text" class="form-control" value='.$row['old_seat'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['oldSeat'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -226,8 +226,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                 <label">ใบเสร็จการโอน: </label">';
-                                                    if($row['slip_pic'] != ''){
-                                                        echo "<center><img class='mt-2 mb-2' src='../../bookingpic/".$row['slip_pic']."' height='300'></center>";
+                                                    if($row['slipPic'] != ''){
+                                                        echo "<center><img class='mt-2 mb-2' src='../../bookingpic/".$row['slipPic']."' height='300'></center>";
                                                     }else{
                                                         echo "";
                                                     }
@@ -240,28 +240,28 @@
                                         <div class="row">
                                             <div class="col-sm-10"></div>
                                             <div class="col-sm-2">
-                                                <a href="chkTicket-inc.php?chkStatus='.$row['booking_id'].'" class="btn btn-success text-white w-100">รับตั๋ว</a>
+                                                <a href="chkTicket-inc.php?chkStatus='.$row['bookingID'].'" class="btn btn-success text-white w-100">รับตั๋ว</a>
                                             </div>
                                         </div>
                                     </div>';
                                 }
                             }elseif($booking_id != "" && $booking_type == "จองตั๋วแบบเหมา"){
                                 $book_id = $booking_id;
-                                $sql = "SELECT * FROM booking inner join user_db on user_db.user_id = booking.user_id where booking.booking_id LIKE '%".$book_id."%'";
+                                $sql = "SELECT * FROM booking inner join user_tb on user_tb.userID = booking.userID where booking.bookingID LIKE '%".$book_id."%'";
                                 $result = mysqli_query($con, $sql) or die ("Error: " . mysqli_error($con));
 
                                 while($row = mysqli_fetch_array($result)){
                                     echo '<div class="row">
                                             <div class="col-sm-12">';
-                                            if($row['status_book'] == 0 && $row['slip_pic'] == null){
+                                            if($row['statusBook'] == 0 && $row['slipPic'] == null){
                                                 echo '<div class="col-sm-12">
                                                 <input class="btn btn-danger rounded-pill w-100 p-3" value="ยังไม่ได้ชำระ" readonly>
                                                 </div>';
-                                                }elseif($row['slip_pic'] != "" && $row['status_book'] == 0){
+                                                }elseif($row['slipPic'] != "" && $row['statusBook'] == 0){
                                                     echo '<div class="col-sm-12">
                                                     <input class="btn btn-warning rounded-pill w-100 p-3" value="รอการตรวจสอบ" readonly>
                                                 </div>';
-                                                }elseif($row['status_book'] == 1){
+                                                }elseif($row['statusBook'] == 1){
                                                     echo '<div class="col-sm-12">
                                                     <input class="btn btn-success rounded-pill w-100 p-3" value="ชำระเรียบร้อย" readonly>
                                                 </div>';
@@ -272,19 +272,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">ชื่อ-นามสกุล: </label>
-                                                <input type="text" class="form-control" value='.$row['first_name'].'&nbsp;'.$row['last_name'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['firstName'].'&nbsp;'.$row['lastName'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">อีเมล์: </label>
-                                                <input type="text" class="form-control" value='.$row['email'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['emailTxt'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">เบอร์โทรศัพท์: </label>
-                                                <input type="text" class="form-control" value='.$row['phone'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['phoneNumber'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -292,19 +292,19 @@
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">รูปแบบการจอง: </label>
-                                                <input type="text" class="form-control" value='.$row['booking_type'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['bookType'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">วันที่จอง: </label>
-                                                <input type="text" class="form-control" value='.$row['date_booking'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['bookDate'].' readonly>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
                                                 <label for="datepicker">ราคารวม: </label>
-                                                <input type="text" class="form-control" value='.$row['seat_price'].' readonly>
+                                                <input type="text" class="form-control" value='.$row['seatPrice'].' readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -313,8 +313,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                 <label">ใบเสร็จการโอน: </label">';
-                                                    if($row['slip_pic'] != ''){
-                                                        echo "<center><img class='mt-2 mb-2' src='../../bookingpic/".$row['slip_pic']."' height='300'></center>";
+                                                    if($row['slipPic'] != ''){
+                                                        echo "<center><img class='mt-2 mb-2' src='../../bookingpic/".$row['slipPic']."' height='300'></center>";
                                                     }else{
                                                         echo "";
                                                     }
@@ -327,7 +327,7 @@
                                         <div class="row">
                                             <div class="col-sm-10"></div>
                                             <div class="col-sm-2">
-                                                <a href="chkTicket-inc.php?chkStatus='.$row['booking_id'].'" class="btn btn-success text-white w-100">รับตั๋ว</a>
+                                                <a href="chkTicket-inc.php?chkStatus='.$row['bookingID'].'" class="btn btn-success text-white w-100">รับตั๋ว</a>
                                             </div>
                                         </div>
                                     </div>';

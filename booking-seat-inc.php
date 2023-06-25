@@ -9,13 +9,17 @@
         $_SESSION['seatDetail'];
         $_SESSION['dates'];
         $_SESSION['sumSeat'];
-        $_SESSION['timed'];
         $_SESSION['seatChild'];
         $_SESSION['seatAdult'];
         $_SESSION['seatOlder'];
         $seatNumber = $_POST['seatNumber'];
         $_SESSION['seatNumber'] = $seatNumber;
         $status_book = 0;
+
+        // Converse date for insert to database
+        $newdate = $_SESSION['timed'];;
+        $date = str_replace('/', '-', $newdate);
+        $newtime = date('Y-m-d', strtotime($date));
 
         $seatchild = $_SESSION['seatChild'];
         $seatchildprice = 15;
@@ -39,11 +43,6 @@
             }
 
         $allseatprice = $pricechild_Sum + $priceadult_Sum + $priceold_Sum;
-
-        //String to date
-        // $newdate = $_SESSION['dates'];
-        // $date = str_replace('/', '-', $newdate);
-        // $newtime = date('Y-m-d', strtotime($date)); 
         
         if($_SESSION['seatChild'] == ""){
             $_SESSION['seatChild'] = 0;
@@ -55,7 +54,7 @@
             $_SESSION['seatOlder'] = 0;
         }
 
-        $sql = "INSERT INTO booking ("."user_id".", booking_type, date_booking, seat_total, time_booking, child_seat, adult_seat, old_seat, seat_price, slip_pic, status_book)
+        $sql = "INSERT INTO booking ("."userID".", bookType, bookDate, seatTotal, timeBooking, childSeat, adultSeat, oldSeat, seatPrice, slipPic, statusBook)
             VALUES('{$_SESSION['u_id']}', '{$_SESSION['seatDetail']}', '{$_SESSION['dates']}', '{$_SESSION['sumSeat']}', '{$_SESSION['timed']}', '{$_SESSION['seatChild']}',
             '{$_SESSION['seatAdult']}', '{$_SESSION['seatOlder']}', '$allseatprice', '', '$status_book')";
         $query = mysqli_query($con, $sql);
@@ -68,11 +67,11 @@
                 $seat_detail = explode(",",$new);//A1,B1,A2
                
                 for($i=0; $i<count($seat_detail); $i++){
-                    $sql = "INSERT INTO seatdetail (booking_id, seat_detail) values ('$seat_booking', '$seat_detail[$i]')";
+                    $sql = "INSERT INTO seatdetail (bookingID, seatNumber) values ('$seat_booking', '$seat_detail[$i]')";
                     $query = mysqli_query($con, $sql);   
                 }
             }else{
-                $sql = "INSERT INTO seatdetail (booking_id, seat_detail) values ('$seat_booking', '$new')";
+                $sql = "INSERT INTO seatdetail (bookingID, seatNumber) values ('$seat_booking', '$new')";
                 $query = mysqli_query($con, $sql);
             }
         }

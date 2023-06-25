@@ -27,10 +27,10 @@
                         exit();
                     }elseif($hashedPwdCheck == true){
                         $_SESSION['u_id'] = $row['userID'];
-                        $_SESSION['u_first'] = $row['firsName'];
+                        $_SESSION['u_first'] = $row['firstName'];
                         $_SESSION['u_last'] = $row['lastName'];
                         $_SESSION['u_username'] = $row['userName'];
-                        $_SESSION['u_phone'] = $row['phonenumber'];
+                        $_SESSION['u_phone'] = $row['phoneNumber'];
                         $_SESSION['u_email'] = $row['emailTxt'];
                         header("Location: index.php?login=success");
                         exit();

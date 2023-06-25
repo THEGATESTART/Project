@@ -124,14 +124,14 @@
                                             include 'connect.php';
                                                                     
                                             $booking_id = $_REQUEST['booking_id'];
-                                            $sql = "SELECT child_seat, adult_seat, old_seat, seat_price FROM booking where booking_id='$booking_id'";
+                                            $sql = "SELECT childSeat, adultSeat, oldSeat, seatPrice FROM booking where bookingID='$booking_id'";
                                             $result = mysqli_query($con, $sql);
 
                                             while($row = mysqli_fetch_array($result)){
                                                 $childPrice = 15;
                                                 $adultPrice = 30;
                                                 $oldPrice = 15;
-                                                $allseat = $row['child_seat'] + $row['adult_seat'] + $row['old_seat'];
+                                                $allseat = $row['childSeat'] + $row['adultSeat'] + $row['oldSeat'];
 
                                                echo "<div class='table-responsive-sm'>
                                                 <table class='table table-borderless'>
@@ -146,27 +146,27 @@
                                                     <tbody>
                                                         <tr>
                                                         <th scope='row'>เด็ก</th>
-                                                        <td style='text-align: center;'>".$row['child_seat']."</td>
+                                                        <td style='text-align: center;'>".$row['childSeat']."</td>
                                                         <td style='text-align: center;'>15</td>
-                                                        <td style='text-align: center;'>".$row['child_seat'] * $childPrice."</td>
+                                                        <td style='text-align: center;'>".$row['childSeat'] * $childPrice."</td>
                                                         </tr>
                                                         <tr>
                                                         <th scope='row'>ผู้ใหญ่</th>
-                                                        <td style='text-align: center;'>".$row['adult_seat']."</td>
+                                                        <td style='text-align: center;'>".$row['adultSeat']."</td>
                                                         <td style='text-align: center;'>30</td>
-                                                        <td style='text-align: center;'>".$row['adult_seat'] * $adultPrice."</td>
+                                                        <td style='text-align: center;'>".$row['adultSeat'] * $adultPrice."</td>
                                                         </tr>
                                                         <tr>
                                                         <th scope='row'>ผู้สูงอายุ</th>
-                                                        <td style='text-align: center;'>".$row['old_seat']."</td>
+                                                        <td style='text-align: center;'>".$row['oldSeat']."</td>
                                                         <td style='text-align: center;'>15</td>
-                                                        <td style='text-align: center;'>".$row['old_seat'] * $oldPrice."</td>
+                                                        <td style='text-align: center;'>".$row['oldSeat'] * $oldPrice."</td>
                                                         </tr>
                                                         <tr>
                                                         <th scope='row'>ยอดรวมทั้งหมด:</th>
                                                         <td style='text-align: center;'>".$allseat."</td>
                                                         <td style='text-align: center;'></td>
-                                                        <td style='text-align: center;'><h6>".$row['seat_price'].'&nbsp;บาท'."</h6></td>
+                                                        <td style='text-align: center;'><h6>".$row['seatPrice'].'&nbsp;บาท'."</h6></td>
                                                         </tr>
                                                     </tbody>
                                                     </table>
